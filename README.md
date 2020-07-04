@@ -1,7 +1,7 @@
 # Wumpus World - Prolog Implementation Explained
-Alexandre Dietrich
-Patrick Chabelski
-Rodolfo Vasconcelos
+- Alexandre Dietrich
+- Patrick Chabelski
+- Rodolfo Vasconcelos
 
 SCS 3547 – Intelligent Agents & Reinforcement Learning
 
