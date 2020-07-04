@@ -6,7 +6,8 @@
 1. Start
 	1. Init
 		1. Init_game
-		1. Init_land_72
+		1. Init_land_72 
+			1. [See Fig. 7.2](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/figure_7_2.png)
 		1. Init_agent
 			1. Visit
 		1. Init_wumpus
@@ -39,7 +40,18 @@
             1. standing,
             1. step_pre(VL).
                 1. TakeSteps(VL) -&gt; LOOP BACK TO 2. UNTIL WIN/LOSE
+</div>
 
+<div class="nb-cell markdown" name="md13">
+## Run the application
+</div>
+
+<div class="nb-cell query" data-run="onload" data-tabled="true" name="q1">
+start.
+</div>
+
+<div class="nb-cell markdown" name="md1">
+## Header and Copyright
 </div>
 
 <div class="nb-cell program" data-background="true" data-singleline="true" name="p1">
@@ -60,7 +72,13 @@
 %
 %------------------------------------------------------------------------------
 
+</div>
 
+<div class="nb-cell markdown" name="md2">
+## Dynamic methods
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p2">
 %------------------------------------------------------------------------------
 % Declaring dynamic methods
 
@@ -78,8 +96,13 @@
          isWumpus/2,
          isGold/2
 	    ]).
+</div>
 
+<div class="nb-cell markdown" name="md4">
+## Start the Game
+</div>
 
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p3">
 %------------------------------------------------------------------------------
 % To start the game
 
@@ -90,11 +113,14 @@ start :-
     take_steps([[1,1]]).
 </div>
 
-<div class="nb-cell markdown" name="md1">
-Test test
+<div class="nb-cell markdown" name="md5">
+## Scheduling simulation
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p2">
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p4">
+%------------------------------------------------------------------------------
+% Scheduling simulation:
+
 step_pre(VisitedList) :-
     agent_location(AL),
     gold_location(GL),
@@ -126,11 +152,13 @@ take_steps(VisitedList) :-
     step_pre(VL).
 </div>
 
-<div class="nb-cell markdown" name="md2">
-Test test 2
+<div class="nb-cell markdown" name="md6">
+## Updating states
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p3">
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p5">
+%------------------------------------------------------------------------------
+% Updating states
 
 update_time :-
     time_taken(T),
@@ -164,7 +192,13 @@ is_pit(no,  X) :-
     \+ pit_location(X).
 is_pit(yes, X) :-
     pit_location(X).
+</div>
 
+<div class="nb-cell markdown" name="md7">
+## Display standings
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p6">
 %------------------------------------------------------------------------------
 % Display standings
 
@@ -189,7 +223,13 @@ stnd(AL, _, AL) :-
 stnd(AL, AL, _) :-
     format('AGENT FOUND THE GOLD!!', []),
     true.
+</div>
 
+<div class="nb-cell markdown" name="md8">
+## Perceptotion
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p7">
 %------------------------------------------------------------------------------
 % Perceptotion
 
@@ -207,7 +247,13 @@ make_percept_sentence([Stench,Bleeze,Glitter]) :-
 	smelly(Stench),
 	bleezy(Bleeze),
 	glittering(Glitter).
+</div>
 
+<div class="nb-cell markdown" name="md9">
+## Initializing
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p8">
 %------------------------------------------------------------------------------
 % Initializing
 
@@ -261,7 +307,13 @@ visit(Xs) :-
     visited_cells(Ys),
     retractall( visited_cells(_) ),
     assert( visited_cells([Ys|Xs]) ).
+</div>
 
+<div class="nb-cell markdown" name="md10">
+## Perceptors
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p9">
 %------------------------------------------------------------------------------
 % Perceptors
 
@@ -318,7 +370,13 @@ glittering(yes) :-
     agent_location(AL),
     isGlittering(AL).
 glittering(no).
+</div>
 
+<div class="nb-cell markdown" name="md11">
+## Knowledge Base
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p10">
 %------------------------------------------------------------------------------
 % Knowledge Base:
 
@@ -411,7 +469,13 @@ ask_KB(VisitedList, Action) :-
     not_member(L, VisitedList),
     update_agent_location(L),
     Action = L.
+</div>
 
+<div class="nb-cell markdown" name="md12">
+## Utils
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p11">
 %------------------------------------------------------------------------------
 % Utils
 
