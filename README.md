@@ -11,6 +11,8 @@ Instructor: Larry Simon
 
 ## About the Project
 Richard O. Legendi has implemented in Prolog the Wumpus World described in Artificial Intelligence : A Modern Approach (Russel - Norvig)
+- https://github.com/rlegendi/wumpus-prolog/
+- https://www.amazon.ca/Artificial-Intelligence-Modern-Approach-3rd/dp/0136042597
 
 This project is an explanation of how each rule in the program works.
 
