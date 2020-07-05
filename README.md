@@ -22,7 +22,7 @@ The outcome of this project is a Swish Notebook.
 ![Wumpus World](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/figure_7_2.png)
 
 ## How to Run:
-1. Download commented_wumpus_world.swinb
+1. Download https://github.com/ravasconcelos/wumpus_world/blob/master/Wumpus_World_Explained.swinb
 1. Go to https://swish.swi-prolog.org/
 1. Import the Swish Notebook
     1. Create a new Notebook
