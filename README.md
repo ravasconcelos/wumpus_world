@@ -22,19 +22,7 @@ The outcome of this project is a Swish Notebook.
 ![Wumpus World](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/figure_7_2.png)
 
 ## How to Run:
-1. Download https://github.com/ravasconcelos/wumpus_world/blob/master/Wumpus_World_Explained.swinb
-1. Go to https://swish.swi-prolog.org/
-1. Import the Swish Notebook
-    1. Create a new Notebook
-    ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_notebook.png)
-    1. Add a Markdown
-    ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_markdown.png)
-    1. Click in the Plus Sign
-    ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_plus_sign.png)
-    1. Click in the "more" link
-    ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_more.png)
-    1. Seletec the downloaded Siwsh Notebook file
-    ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_choose_file.png)
+1. Open https://swish.swi-prolog.org/p/Wumpus%20World%20-%20Explained.swinb
 1. Run all queries
 ![](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/howto_play.png)
 
