@@ -22,6 +22,46 @@ Richard O. Legendi has implemented in Prolog the Wumpus World described in Artif
 This project is an explanation of how each rule in the program works.
 
 The outcome of this project is this Swish Notebook.
+
+# Improvements
+
+The improvements of this code can be found in this Notebook:
+- https://swish.swi-prolog.org/p/Wumpus%20World%20-%20Improved.swinb
+</div>
+
+<div class="nb-cell markdown" name="md15">
+## Deviations from Wumpus World Rules
+The version of the Wumpus World code by Richard O. Legendi deviates from the typical Wumpus World rules in numerous ways. This was done to facilitate an easier version of the game to understand, though has led to a few complications during runtime. These differences (and any associated problems) are as follows:
+- Movement:
+	- WW Rules: The agent can only move forward, turn left or turn right on each turn, and cannot move diagonally.
+	- Legendi: The agent can go to any of the 8 nearest squares in one direct move per turn.
+- Perceptions:
+	- WW Rules: The agent shall receive a maximum of 5 percepts per turn: “breezy” (if there a pit adjacent), “stench” (if there is a Wumpus adjacent), “glitter” (if the gold is in the current spot), “bump” (if the agent walks into a wall at the boundary), and “scream” (if the agent’s arrow hits the wumpus)
+	- Legendi: The agent only receives 3 percepts: breezy, stench, and glitter
+		- Each turn, the agent gets information from the KB about adjacent spaces. However, the implementation for KB checking of gold is not right, as it will check space [3,2] each time (instead of checking adjacent squares as it does for the Wumpus and Pit percepts)
+			- [KB learn Gold](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/check_gold.png)
+			- This can be solved by updating the add_gold_KB(no) predicate to the following (which is the same setup as the Wumpus and Pit checks)
+			- [KB learn Gold - Fixed](https://raw.githubusercontent.com/ravasconcelos/wumpus_world/master/images/fix_gold.png)
+
+
+		- Each turn, the agent gets information from the KB about adjacent spaces. The code is not very efficient, as it checks spots that are outside of the world. For instance, an agent in location [1,1] will still check [1,0] and [0,1]. There will never be anything in these spots and the agent cannot move to these spots; this is simply a parasitic element of code inefficiency. 
+
+- Boundaries:
+	- WW Rules: The agent receives a “bump” percept if they attempt to move forward into a wall, when on the boundaries of the world grid
+	- Legendi:  The agent’s action-taking process allows it to move to any nearby square that has not yet been visited; this, coupled with the inability to turn/move forward automatically inhibits the ability to walk into a wall
+
+- Actions:
+	- WW Rules: The agent can fire one arrow, grab the gold (if in the same room) as part of its action in a turn, or climb out (if it is back at the entrance)
+	- Legendi: The agent cannot fire an arrow (therefore cannot kill the wumpus), and will automatically obtain the gold once it is detected in the same room as the agent. There is no climb action.
+		- As the agent is not allowed to rotate its orientation, the ability to “aim” its arrow is not possible with this implementation
+		- Additionally, the fact that the wumpus cannot be killed means that there is no “scream” percept available for the agent
+- Ending the Game:
+	- WW Rules: The game will end once the agent finds the gold and climbs out of the cave entrance (located at the starting position [1,1]), or if the agent dies via Wumpus or falling into a pit
+	- Legendi: The game will end once the agent detects that it is on the same spot as the gold. The agent will still die if it walks into the wumpus or into a pit.
+- Object initialization:
+	- WW Rules: The locations of the Wumpus, Pits, and Gold are randomized each session.
+	- Legendi: The locations of the Wumpus, Pits, and Gold are initialized per Figure 7.2 in the Russell &amp; Norvig textbook.
+		- Figure 7.2 specifies that the Wumpus should be initialized in [3,1]. However, this is hard coded as [4,1] in the Legendi code. Reverting this value back to [3,1] results in the agent losing each game; seemingly the author has placed the Wumpus in [4,1] to facilitate completion of the game
 </div>
 
 <div class="nb-cell markdown" name="md3">
@@ -76,7 +116,7 @@ start.
 ## Header and Copyright
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p1">
+<div class="nb-cell program" data-background="true" name="p1">
 %------------------------------------------------------------------------------
 % A Prolog Implementation of the Wumpus World described in
 % Artificial Intelligence : A Modern Approach (Russel - Norvig)
@@ -112,7 +152,7 @@ Define dynamic predicates with associated arities; these are used as methods thr
 - isGold: 2 data points -&gt; location and Yes/No for if gold is in spot
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p2">
+<div class="nb-cell program" data-background="true" name="p2">
 %------------------------------------------------------------------------------
 % Declaring dynamic methods
 
@@ -139,7 +179,7 @@ Define dynamic predicates with associated arities; these are used as methods thr
 - take_steps: Put agent in spot 1,1 and start the game
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p3">
+<div class="nb-cell program" data-background="true" name="p3">
 %------------------------------------------------------------------------------
 % To start the game
 
@@ -169,7 +209,7 @@ start :-
     - step_pre: This is a call to a predicate that begins a recursive chain (to continue the game until you win or lose). VL is the visited list updated with the current agent location.
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p4">
+<div class="nb-cell program" data-background="true" name="p4">
 %------------------------------------------------------------------------------
 % Scheduling simulation:
 
@@ -219,7 +259,7 @@ take_steps(VisitedList) :-
 - is_pit: Check to see if the pit location will be the same as the agent location at every call of the "standing" predicate
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p5">
+<div class="nb-cell program" data-background="true" name="p5">
 %------------------------------------------------------------------------------
 % Updating states
 
@@ -266,7 +306,7 @@ is_pit(yes, X) :-
 - stnd(AL, AL, _): If the locations of the agent and gold are the same, you found the gold and the game is won
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p6">
+<div class="nb-cell program" data-background="true" name="p6">
 %------------------------------------------------------------------------------
 % Display standings
 
@@ -299,7 +339,7 @@ stnd(AL, AL, _) :-
 - make_perception and test_perception: Not used. They can safely be removed from the code.
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p7">
+<div class="nb-cell program" data-background="true" name="p7">
 %------------------------------------------------------------------------------
 % Perceptotion
 
@@ -401,7 +441,7 @@ visit(Xs) :-
 - glittering: Based on the current agent location (AL), check if it is glittering then the agent and the gold are in the same location and the predicate holds true returning yes. If it is not, the predicate fails returning no.
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p9">
+<div class="nb-cell program" data-background="true" name="p9">
 %------------------------------------------------------------------------------
 % Perceptors
 
@@ -484,7 +524,7 @@ glittering(no).
     - Action = Lthe action taken will be this spot
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p10">
+<div class="nb-cell program" data-background="true" name="p10">
 %------------------------------------------------------------------------------
 % Knowledge Base:
 
@@ -581,10 +621,10 @@ ask_KB(VisitedList, Action) :-
 
 <div class="nb-cell markdown" name="md12">
 ## Utils
-- not_member: check if the new move location [x,y] has already been visited (need to elaborate a bit here; dig into what the semicolon does / review lists and appending). 
+- not_member: check if the new move location [x,y] has already been visited (need to elaborate a bit here; dig into what the semicolon does / review lists and appending).
 </div>
 
-<div class="nb-cell program" data-background="true" data-singleline="true" name="p11">
+<div class="nb-cell program" data-background="true" name="p11">
 %------------------------------------------------------------------------------
 % Utils
 
